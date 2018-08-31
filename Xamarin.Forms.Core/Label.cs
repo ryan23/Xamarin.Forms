@@ -11,7 +11,7 @@ namespace Xamarin.Forms
 {
 	[ContentProperty("Text")]
 	[RenderWith(typeof(_LabelRenderer))]
-	public class Label : View, IFontElement, ITextElement, ITextAlignmentElement, ILineHeightElement, IElementConfiguration<Label>
+	public class Label : View, IFontElement, ITextElement, ITextAlignmentElement, ILineHeightElement, IElementConfiguration<Label>, IDecorableTextElement
 	{
 		public static readonly BindableProperty HorizontalTextAlignmentProperty = TextAlignmentElement.HorizontalTextAlignmentProperty;
 
@@ -35,6 +35,8 @@ namespace Xamarin.Forms
 		public static readonly BindableProperty FontSizeProperty = FontElement.FontSizeProperty;
 
 		public static readonly BindableProperty FontAttributesProperty = FontElement.FontAttributesProperty;
+
+		public static readonly BindableProperty TextDecorationsProperty = DecorableTextElement.TextDecorationsProperty;
 
 		public static readonly BindableProperty FormattedTextProperty = BindableProperty.Create(nameof(FormattedText), typeof(FormattedString), typeof(Label), default(FormattedString),
 			propertyChanging: (bindable, oldvalue, newvalue) =>
@@ -77,6 +79,14 @@ namespace Xamarin.Forms
 			propertyChanged: (bindable, oldvalue, newvalue) => ((Label)bindable).InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged));
 
 		public static readonly BindableProperty LineHeightProperty = LineHeightElement.LineHeightProperty;
+
+		public static readonly BindableProperty MaxLinesProperty = BindableProperty.Create(nameof(MaxLines), typeof(int), typeof(Label), -1, propertyChanged: (bindable, oldvalue, newvalue) =>
+			{
+				if (bindable != null)
+				{
+					((Label)bindable).InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
+				}
+			});
 
 		readonly Lazy<PlatformConfigurationRegistry<Label>> _platformConfigurationRegistry;
 
@@ -155,6 +165,12 @@ namespace Xamarin.Forms
 			set { SetValue(FontAttributesProperty, value); }
 		}
 
+		public TextDecorations TextDecorations
+		{
+			get { return (TextDecorations)GetValue(TextDecorationsProperty); }
+			set { SetValue(TextDecorationsProperty, value); }
+		}
+
 		public string FontFamily
 		{
 			get { return (string)GetValue(FontFamilyProperty); }
@@ -172,6 +188,12 @@ namespace Xamarin.Forms
 		{
 			get { return (double)GetValue(LineHeightProperty); }
 			set { SetValue(LineHeightProperty, value); }
+		}
+
+		public int MaxLines
+		{
+			get => (int)GetValue(MaxLinesProperty);
+			set => SetValue(MaxLinesProperty, value);
 		}
 
 		double IFontElement.FontSizeDefaultValueCreator() =>
