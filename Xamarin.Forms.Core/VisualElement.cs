@@ -329,17 +329,20 @@ namespace Xamarin.Forms
 			set { SetValue(RotationYProperty, value); }
 		}
 
-		public double Scale {
+		public double Scale
+		{
 			get => (double)GetValue(ScaleProperty);
 			set => SetValue(ScaleProperty, value);
 		}
 
-		public double ScaleX {
+		public double ScaleX
+		{
 			get => (double)GetValue(ScaleXProperty);
 			set => SetValue(ScaleXProperty, value);
 		}
 
-		public double ScaleY {
+		public double ScaleY
+		{
 			get => (double)GetValue(ScaleYProperty);
 			set => SetValue(ScaleYProperty, value);
 		}
@@ -862,6 +865,9 @@ namespace Xamarin.Forms
 			if (focus != null)
 				focus(this, new FocusEventArgs(this, true));
 		}
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
 
 		protected internal virtual void ChangeVisualState()
 		{
